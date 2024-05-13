@@ -1,0 +1,25 @@
+.rounded {
+  border-radius: 10px;
+}
+.button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.transxBox {
+  border-radius: 20px;
+  box-shadow: 0px 0px 4px 0px;
+  padding: 20px;
+  word-wrap: calc();
+}
+.footerBox {
+  border-radius: 20px;
+  box-shadow: 0px 0px 4px 0px;
+  padding: 20px;
+  word-wrap: calc();
+  margin-top: 20px;
+}
