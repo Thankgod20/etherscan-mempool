@@ -12,6 +12,7 @@ import SearchArea from "@/components/SearchArea";
 import Link from "next/link";
 import { useEthContext } from "@/context/eathContext";
 import mempoolData from "./memepool.json"
+import Marquee from "react-fast-marquee"
 import {
   Table,
   TableBody,
@@ -42,7 +43,7 @@ interface MeMPool {
 const Trnx: React.FC = () => {
   const { ethPrice } = useEthContext();
   const { trnxhash }: { trnxhash: string } = useParams();
-  const [mempool, setMempool] = useState<MeMPool | null>(null);
+  const [mempool, setMempool] = useState<MeMPool[]>([]);
 
   const [transHash, setTransHash] = useState<string | null>(null);
   const [block, setBlock] = useState<number | null>(null);
@@ -53,59 +54,73 @@ const Trnx: React.FC = () => {
   const [to, setTo] = useState<string | null | undefined>(null);
   const [value, setValue] = useState<string | null>(null);
   const [ethUSD, setethUSD] = useState<string>("");
+
   const endpoint = 'https://mainnet.infura.io/v3/56bb53b84c2e439fa277c9e6522044fe';
   const web3 = new Web3(endpoint);
 
-  console.log("Address=", trnxhash)
   const [accountAddress, setAccountAddress] = useState("");
   const handleSearch = (value: string) => {
     setAccountAddress(value);
   };
   useEffect(() => {
-    console.log("Stat")
+
     const fetchBalanceAndTransactions = async () => {
+
       try {
-        const foundTransaction = mempoolData.mempool.find(
-          (transaction) => transaction.transactionhash === trnxhash
-        );
-        if (foundTransaction) {
-          console.log("Mempool", foundTransaction)
-          setTransHash(trnxhash)
-          setBlock(Number(foundTransaction.block))
-          setStatus(foundTransaction.status)
-          setGasPrice(weiToEther(foundTransaction.tranFee))
-          setGas(weiToGwei(foundTransaction.gas))
-          setFrom(foundTransaction.from)
-          setTo(foundTransaction.to)
-          setValue(weiToEther(foundTransaction.value))
-          const ethUDST = Number(weiToEther(foundTransaction.value)) * parseFloat(ethPrice)
-          const ethVa = (ethUDST).toFixed(2)
-          //console.log("===><><>", isNaN(Number(ethVa)) ? "0.00" : ethVa, ethPrice)
-          setethUSD(isNaN(Number(ethVa)) ? "0" : ethVa)
-        } else
-          if (trnxhash) {
-            const transaction = await web3.eth.getTransaction(trnxhash);
-            setTransHash(trnxhash)
-            setBlock(Number(transaction.blockNumber))
-            setStatus("successful")
-            setGasPrice(weiToEther(transaction.gasPrice))
-            setGas(weiToGwei(transaction.gas))
-            setFrom(transaction.from)
-            setTo(transaction.to)
-            setValue(weiToEther(transaction.value))
-            const ethUDST = Number(weiToEther(transaction.value)) * parseFloat(ethPrice)
-            const ethVa = (ethUDST).toFixed(2)
-            //console.log("===><><>", isNaN(Number(ethVa)) ? "0.00" : ethVa, ethPrice)
-            setethUSD(isNaN(Number(ethVa)) ? "0" : ethVa)
-            console.log(transaction)
-          }
+        const response = await fetch('https://stonkbullz.com/mempool.json');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log("DATA", data.mempool)
+        setMempool(data.mempool)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchBalanceAndTransactions();
-  }, [trnxhash, web3, ethPrice]);
+  }, []);
+  useEffect(() => {
+    const updateBalance = async () => {
+      const foundTransaction = mempool.find(
+        (transaction) => transaction.transactionhash === trnxhash
+      );
+      console.log("STAT_!", foundTransaction)
+      if (foundTransaction) {
+        console.log("Mempool", foundTransaction)
+        setTransHash(trnxhash)
+        setBlock(Number(foundTransaction.block))
+        setStatus(foundTransaction.status)
+        setGasPrice(weiToEther(foundTransaction.tranFee))
+        setGas(weiToGwei(foundTransaction.gas))
+        setFrom(foundTransaction.from)
+        setTo(foundTransaction.to)
+        setValue(weiToEther(foundTransaction.value))
+        const ethUDST = Number(weiToEther(foundTransaction.value)) * parseFloat(ethPrice)
+        const ethVa = (ethUDST).toFixed(2)
+        //console.log("===><><>", isNaN(Number(ethVa)) ? "0.00" : ethVa, ethPrice)
+        setethUSD(isNaN(Number(ethVa)) ? "0" : ethVa)
+      } else if (trnxhash) {
+        console.log("Stat 2")
+        const transaction = await web3.eth.getTransaction(trnxhash);
+        setTransHash(trnxhash)
+        setBlock(Number(transaction.blockNumber))
+        setStatus("successful")
+        setGasPrice(weiToEther(transaction.gasPrice))
+        setGas(weiToGwei(transaction.gas))
+        setFrom(transaction.from)
+        setTo(transaction.to)
+        setValue(weiToEther(transaction.value))
+        const ethUDST = Number(weiToEther(transaction.value)) * parseFloat(ethPrice)
+        const ethVa = (ethUDST).toFixed(2)
+        //console.log("===><><>", isNaN(Number(ethVa)) ? "0.00" : ethVa, ethPrice)
+        setethUSD(isNaN(Number(ethVa)) ? "0" : ethVa)
+        console.log(transaction)
+      }
+    };
+    updateBalance()
+  }, [mempool, trnxhash, ethPrice]);
 
 
   const weiToEther = (valueInWei: string): string => {
@@ -127,7 +142,7 @@ const Trnx: React.FC = () => {
           <button className={styles.button}>Overview</button>
           <Card className={styles.transxBox}>
             <p>
-              <marquee style={{ color: "red", fontSize: "10px" }} direction="right">{status == "pending" ? "Low Priority Transaction Please Boost GasFee" : ""}</marquee>
+              <Marquee style={{ color: "red", fontSize: "10px" }} direction="right">{status == "pending" ? "Low Priority Transaction Please Boost GasFee" : ""}</Marquee>
               <span ></span>
             </p>
             <p>
