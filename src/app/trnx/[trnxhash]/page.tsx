@@ -9,6 +9,7 @@ import { CiCircleQuestion, } from "react-icons/ci";
 import { FaRegCopy, FaEthereum } from "react-icons/fa";
 import { IoCheckmarkCircleSharp, } from "react-icons/io5";
 import SearchArea from "@/components/SearchArea";
+import ImageHeader from "@/components/ImageHeader";
 import Link from "next/link";
 import { useEthContext } from "@/context/eathContext";
 import mempoolData from "./memepool.json"
@@ -133,7 +134,7 @@ const Trnx: React.FC = () => {
 
   return (
     <div>
-      <SearchArea onSearch={handleSearch} />
+      <ImageHeader />
       <div className="mt-12 relative min-h-[70vh] w-11/12 lg:w-2/3 mx-auto space-y-8">
 
         <h1 className="text-3xl font-bold text-left">{status == "pending" ? "MeMPool Transaction Details" : "Transaction Details"}</h1>

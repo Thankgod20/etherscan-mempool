@@ -14,7 +14,11 @@
   border-radius: 20px;
   box-shadow: 0px 0px 4px 0px;
   padding: 20px;
-  word-wrap: calc();
+  width: 100%; /* or any specific width */
+  word-wrap: break-word; /* ensures the word will break if necessary */
+  overflow-wrap: break-word; /* similar to word-wrap, added for more compatibility */
+  word-break: break-all; /* forces the word to break at any character */
+  overflow: hidden;
 }
 .footerBox {
   border-radius: 20px;
