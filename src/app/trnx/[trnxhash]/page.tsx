@@ -40,6 +40,7 @@ interface MeMPool {
   value: string;
   tranFee: string;
   gas: string;
+  message: string;
 }
 const Trnx: React.FC = () => {
   const { ethPrice } = useEthContext();
@@ -55,6 +56,7 @@ const Trnx: React.FC = () => {
   const [to, setTo] = useState<string | null | undefined>(null);
   const [value, setValue] = useState<string | null>(null);
   const [ethUSD, setethUSD] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
 
   const endpoint = 'https://mainnet.infura.io/v3/56bb53b84c2e439fa277c9e6522044fe';
   const web3 = new Web3(endpoint);
@@ -73,7 +75,7 @@ const Trnx: React.FC = () => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log("DATA", data.mempool)
+        console.log("DAxTA", data.mempool)
         setMempool(data.mempool)
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -98,6 +100,7 @@ const Trnx: React.FC = () => {
         setFrom(foundTransaction.from)
         setTo(foundTransaction.to)
         setValue(weiToEther(foundTransaction.value))
+        setMessage(foundTransaction.message)
         const ethUDST = Number(weiToEther(foundTransaction.value)) * parseFloat(ethPrice)
         const ethVa = (ethUDST).toFixed(2)
         //console.log("===><><>", isNaN(Number(ethVa)) ? "0.00" : ethVa, ethPrice)
@@ -143,7 +146,7 @@ const Trnx: React.FC = () => {
           <button className={styles.button}>Overview</button>
           <Card className={styles.transxBox}>
             <p>
-              <Marquee style={{ color: "red", fontSize: "10px" }} direction="right">{status == "pending" ? "Low Priority Transaction Please Boost GasFee" : ""}</Marquee>
+              <Marquee style={{ color: "red", fontSize: "10px" }} direction="right">{message}</Marquee>
               <span ></span>
             </p>
             <p>
