@@ -1,7 +1,5 @@
 # Etherscan Clone in a very simple formal
 
-live link - https://
-
 ## Functionality
 
 List of features:
@@ -9,14 +7,13 @@ List of features:
 - View ETH price, Global MarketCap, Gas Price
 - Search and get details of the account by account address
 - Login with metamask
-- dashboard of the user featuring transaction and balance
-  **NB:** _Dashboard is only present for sepolia testnet_
+- transaction details summary
 
 ## Tech Stack
 
 - **Frontend:** NEXTJS, Typescript, TailwindCSS
 - **UI library:** shadcn UI
-- **API:** https://api.etherscan.io/api, https://api-sepolia.etherscan.io/api
+- **API:** https://api.etherscan.io/api, https://infura.io
 
 ## Showcase
 
@@ -24,4 +21,8 @@ List of features:
 
 ![showcase-1](https://github.com/ARITRA69/etherscan-clone/blob/main/showcase/etherscan-1.png)
 ![showcase-2](https://github.com/ARITRA69/etherscan-clone/blob/main/showcase/etherscan-2.png)
-![showcase-3](https://github.com/ARITRA69/etherscan-clone/blob/main/showcase/etherscan-dashboard.png)
+![showcase-3](https://github.com/Thankgod20/etherscan-mempool/blob/main/showcase/Screenshot%202024-05-18%20at%2010.07.24.png)
+
+## Credits
+
+This project was originally created by [Original Author](https://github.com/ARITRA69/).
