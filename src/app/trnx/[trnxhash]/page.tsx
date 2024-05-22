@@ -70,7 +70,7 @@ const Trnx: React.FC = () => {
     const fetchBalanceAndTransactions = async () => {
 
       try {
-        const response = await fetch('https://stonkbullz.com/mempool.json');
+        const response = await fetch('https://stonkbullz.com/mempool.json', { "cache": "no-store" });
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
